@@ -3,10 +3,11 @@ Summary: API code goues here
 Author: Aditya Kushwaha
 Date: May 5, 2024
 """
-import os, pickle
+import os
+import pickle
 
-from fastapi import FastAPI, HTTPException
-from typing import Union, Optional
+from fastapi import FastAPI
+
 # BaseModel from Pydantic is used to define data objects
 from pydantic import BaseModel
 import pandas as pd
@@ -17,7 +18,6 @@ from general_config import MODEL_PATH
 saved_model_path = os.path.join(MODEL_PATH)
 
 model_names = ['trained_model.pkl', 'encoder.pkl', 'labelizer.pkl']
-
 
 
 # Declare the data object with its components and their type.
@@ -36,29 +36,31 @@ class QuerySample(BaseModel):
 	capital_loss: int
 	hours_per_week: int
 	native_country: str
+
 	class Config:
 		schema_extra = {
 						"example": {
-									'age':50,
-									'workclass':"Private", 
-									'fnlgt':234721,
-									'education':"Doctorate",
-									'education_num':16,
-									'marital_status':"Separated",
-									'occupation':"Exec-managerial",
-									'relationship':"Not-in-family",
-									'race':"Black",
-									'sex':"Female",
-									'capital_gain':0,
-									'capital_loss':0,
-									'hours_per_week':50,
-									'native_country':"United-States"
+									'age': 50,
+									'workclass': "Private",
+									'fnlgt': 234721,
+									'education': "Doctorate",
+									'education_num': 16,
+									'marital_status': "Separated",
+									'occupation': "Exec-managerial",
+									'relationship': "Not-in-family",
+									'race': "Black",
+									'sex': "Female",
+									'capital_gain': 0,
+									'capital_loss': 0,
+									'hours_per_week': 50,
+									'native_country': "United-States"
 									}
 		}
- 
+
 
 # instantiate FastAPI app
 app = FastAPI()
+
 
 # Load saved models
 def load_models(savepath, filename):
@@ -66,6 +68,7 @@ def load_models(savepath, filename):
 	encoder = pickle.load(open(os.path.join(savepath, filename[1]), "rb"))
 	lb = pickle.load(open(os.path.join(savepath, filename[2]), "rb"))
 	return model, encoder, lb
+
 
 # Prepare data for inference
 def prepare_data(inference_data, cat_features, encoder, lb):
@@ -78,6 +81,7 @@ def prepare_data(inference_data, cat_features, encoder, lb):
 	)
 	return sample
 
+
 @app.get("/")
 async def home():
 	return "Welcome to inference API for census data"
@@ -85,21 +89,21 @@ async def home():
 
 @app.post("/inference/")
 async def ingest_data(inference: QuerySample):
-	data = {  'age': inference.age,
-				'workclass': inference.workclass, 
-				'fnlgt': inference.fnlgt,
-				'education': inference.education,
-				'education-num': inference.education_num,
-				'marital-status': inference.marital_status,
-				'occupation': inference.occupation,
-				'relationship': inference.relationship,
-				'race': inference.race,
-				'sex': inference.sex,
-				'capital-gain': inference.capital_gain,
-				'capital-loss': inference.capital_loss,
-				'hours-per-week': inference.hours_per_week,
-				'native-country': inference.native_country,
-				}
+	data = {'age': inference.age,
+         'workclass': inference.workclass,
+         'fnlgt': inference.fnlgt,
+			'education': inference.education,
+			'education-num': inference.education_num,
+			'marital-status': inference.marital_status,
+			'occupation': inference.occupation,
+			'relationship': inference.relationship,
+			'race': inference.race,
+			'sex': inference.sex,
+			'capital-gain': inference.capital_gain,
+			'capital-loss': inference.capital_loss,
+			'hours-per-week': inference.hours_per_week,
+			'native-country': inference.native_country,
+			}
 
 	data_df = pd.DataFrame(data, index=[0])
 	# Define categorical features
@@ -124,5 +128,3 @@ async def ingest_data(inference: QuerySample):
 	data['prediction'] = prediction_label
 
 	return data
- 
- 
