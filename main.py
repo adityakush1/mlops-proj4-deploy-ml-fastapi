@@ -37,9 +37,10 @@ class QuerySample(BaseModel):
 	hours_per_week: int
 	native_country: str
 
-	class Config:
-		schema_extra = {
-						"example": {
+	model_config = {
+    "json_schema_extra": {
+						"examples": [
+          {
 									'age': 50,
 									'workclass': "Private",
 									'fnlgt': 234721,
@@ -55,7 +56,9 @@ class QuerySample(BaseModel):
 									'hours_per_week': 50,
 									'native_country': "United-States"
 									}
+                        ]
 		}
+    }
 
 
 # instantiate FastAPI app
