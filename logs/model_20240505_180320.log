@@ -1,0 +1,5 @@
+2024-05-05 18:03:20,924 - model - DEBUG - Starting
+2024-05-05 18:03:22,103 - model - INFO - Search best hyperparamets on 3 cores
+2024-05-05 18:03:22,103 - model - DEBUG - Training started............
+2024-05-05 18:41:38,448 - model - DEBUG - ################ Best parameters ##############
+2024-05-05 18:41:38,464 - model - DEBUG - Best Params: {'learning_rate': 0.3, 'max_depth': 5, 'min_samples_split': 100, 'n_estimators': 30}

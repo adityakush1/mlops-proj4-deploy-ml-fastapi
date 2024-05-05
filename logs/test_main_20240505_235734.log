@@ -1,0 +1,4 @@
+2024-05-05 23:57:34,970 - test_main - DEBUG - Starting
+2024-05-05 23:57:35,363 - test_main - INFO - Prediction = <=50K
+2024-05-05 23:57:35,383 - test_main - INFO - Prediction = <=50K
+2024-05-05 23:57:35,402 - test_main - WARNING - The sample has 3 features.

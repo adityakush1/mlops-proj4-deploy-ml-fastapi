@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
+import pandas as pd
 
 
 def process_data(
@@ -68,3 +69,9 @@ def process_data(
 
     X = np.concatenate([X_continuous, X_categorical], axis=1)
     return X, y, encoder, lb
+
+
+def preprocess_remove_space(data : pd.DataFrame):
+    data.columns = [col.strip() for col in data.columns]
+    data = data.applymap(lambda x : x.strip() if isinstance(x,str) else x )
+    return data
